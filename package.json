@@ -1,0 +1,17 @@
+{
+  "name": "puzzler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Gert van Valkenhoef <gert@gertvv.nl>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.123",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}
