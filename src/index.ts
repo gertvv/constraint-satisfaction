@@ -1,24 +1,9 @@
-import _ from 'lodash';
+import ConstraintDeclaration from './ConstraintDeclaration';
 import printSolution from './printSolution';
+import { variables, constraintDeclarations } from './luggageProblem';
+import makeConstraints from './makeConstraints';
 
-const variables = [
-  {
-    "name": "bagage",
-    "values": [ "A", "B", "C", "D", "E", "F" ]
-  },
-  {
-    "name": "kleur",
-    "values": [ "Blauw", "Bruin", "Groen", "Oranje", "Rood", "Zwart" ]
-  },
-  {
-    "name": "soort",
-    "values": [ "Handkoffer", "Plunjezak", "Reiskoffer", "Reistas", "Rugzak", "Sporttas" ]
-  },
-  {
-    "name": "naam",
-    "values": [ "Bulhof", "Abby Loftus", "Molstra", "Patel", "J. Schwartz", "SWB" ]
-  }
-];
+import _ from 'lodash';
 
 // A valid problem will have the same number of values for each variable.
 // If n is the number of variables and m the number of values, there are
@@ -27,50 +12,7 @@ const variables = [
 
 const n = variables.length;
 const m = variables[0].values.length;
-
-const constr_eq = (ivar: number, ival: number, ioff: number, cvar: number, cval: number) => {
-  return (sol: number[][]): boolean => {
-    const i = _.findIndex(sol[ivar], (x) => x === ival);
-    if (i === undefined) return undefined;
-    const v = sol[cvar][(i + ioff) % m];
-    return v === undefined ? undefined : v === cval;
-  };
-};
-
-const constr_nq = (ivar: number, ival: number, ioff: number, cvar: number, cval: number) => {
-  return (sol: number[][]): boolean => {
-    const i = _.findIndex(sol[ivar], (x) => x === ival);
-    if (i === undefined) return undefined;
-    const v = sol[cvar][(i + ioff) % m];
-    return v === undefined ? undefined : v !== cval;
-  };
-};
-
-// !!! Puzzel klopt niet - heeft 11 oplossingen, niet 1
-const constraints = [
-  // 1. Het groene stuk bagage, met de naam Molstra, bevindt zich recht tegenover de reiskoffer; ...
-  constr_eq(1, 2, 0, 3, 2),
-  constr_eq(1, 2, 3, 2, 2),
-  // 1. ... dit is niet het rode artikel D.
-  constr_eq(0, 3, 0, 1, 4),
-  constr_nq(0, 3, 0, 2, 2),
-  // 2. Het blauwe stuk bagage ligt direct achter dat van Abby Loftus; ...
-  constr_eq(1, 0, 1, 3, 1),
-  // 2. ... dit is niet het zwarte, ...
-  constr_nq(3, 1, 0, 1, 5),
-  // 2. ... dat twee plaatsen voor het bruine voorbijdraait.
-  constr_eq(1, 1, 2, 1, 5),
-  // 3. De sporttas is van J. Schwartz
-  constr_eq(2, 5, 0, 3, 4),
-  // 4. De oranje rugzak is niet van Patel
-  constr_eq(2, 4, 0, 1, 3),
-  constr_nq(2, 4, 0, 3, 3),
-  // 5. Artikel C, met het label SWB, is geen reistas
-  constr_eq(0, 2, 0, 3, 5),
-  constr_nq(0, 2, 0, 2, 3),
-  // 6. Bij E ziet u een eenvoudige handkoffer
-  constr_eq(0, 4, 0, 2, 0),
-];
+const constraints = makeConstraints(constraintDeclarations, m);
 
 const factorial = (n: number): number => {
   return n === 1 ? 1 : n * factorial(n - 1);
