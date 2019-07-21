@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import printSolution from './printSolution';
 
 const variables = [
   {
@@ -148,10 +149,6 @@ const nextSolution = (sol: number[][]): boolean => {
   return false;
 };
 
-const printSolution = (sol: number[][]): string => {
-  return _.map(_.range(m), (j) => _.map(_.range(n), (i) => variables[i].values[sol[i][j]]).join(', ')).join('\n');
-};
-
 // decodePermutationFactoradic gives the same order as nextPermutation
 /*
 const sol = _.range(n).map(i => _.range(m));
@@ -195,6 +192,9 @@ do {
 console.log(i);
 */
 
+const printSolutionNumeric = (sol: number[][]): string => {
+  return JSON.stringify(sol);
+};
 
 const sol = _.range(n).map(i => i === 0 ? _.range(m): _.times(m, _.constant(undefined)));
 let i = 0, k = 0;
@@ -214,7 +214,8 @@ const search = (sol: number[][], h: number) => {
     if (h === n - 1) ++i;
     if (solutionOk(sol)) {
       if (h === n - 1) {
-        console.log(printSolution(sol) + '\n');
+        console.log(printSolution(sol, variables));
+        console.log(printSolutionNumeric(sol) + '\n');
         ++k;
       } else search(sol, h + 1);
     }
