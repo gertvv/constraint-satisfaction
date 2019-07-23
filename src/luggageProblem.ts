@@ -1,5 +1,10 @@
 import ConstraintDeclaration from './ConstraintDeclaration';
 
+// A valid problem will have the same number of values for each variable.
+// If n is the number of variables and m the number of values, there are
+// (m!)^(n-1) possible solutions. (Keeping the values of the first variable
+// fixed, any combination of permutations of the other variables is valid.)
+
 // !!! Puzzel klopt niet - heeft 11 oplossingen, niet 1
 
 export const variables = [

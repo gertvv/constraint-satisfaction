@@ -2,9 +2,10 @@ import Problem from './Problem';
 import Constraint from './Constraint';
 import _ from 'lodash';
 
-export const csp_recurse = (problem: Problem, assigned: number[], found: number[][]): number[][] => {
+function* csp_recurse(problem: Problem, assigned: number[]): IterableIterator<number[]> {
   if (assigned.length == problem.domains.length) {
-    return _.concat(found, [ assigned ]);
+    yield assigned;
+    return;
   }
   const i = assigned.length;
   for (const val of problem.domains[i]) {
@@ -22,14 +23,13 @@ export const csp_recurse = (problem: Problem, assigned: number[], found: number[
       }
     }
     if (ok) {
-      found = csp_recurse(problem, assn, found);
+      yield* csp_recurse(problem, assn);
     }
   }
-  return found;
 }
 
-const csp_search = (problem: Problem): number[][] => {
-  return csp_recurse(problem, [], []);
+function* csp_search (problem: Problem) {
+  yield* csp_recurse(problem, []);
 }
 
 export default csp_search;
