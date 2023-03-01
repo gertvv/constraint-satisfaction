@@ -2,6 +2,8 @@ import Problem from './Problem';
 import Constraint from './Constraint';
 import _ from 'lodash';
 
+// https://www.ics.uci.edu/~dechter/books/chapter03.pdf
+
 const ac3 = (problem: Problem): Problem => {
   const n = problem.domains.length;
   const domains: number[][] = _.cloneDeep(problem.domains);
